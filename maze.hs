@@ -10,8 +10,9 @@ setWalls (Maze d n ws ss) ws' = Maze d n ws' ss
 pushWall :: Maze -> Wall -> Maze
 pushWall (Maze d n ws ss) w = Maze d n (w:ws) ss
 
-pullWall :: Maze -> Wall
-pullWall (Maze d n ws ss) = head ws
+popWall :: Maze -> (Wall, Maze)
+popWall (Maze _ _ [] _) = error "Test"
+popWall (Maze d n (w:ws) ss) = (w, Maze d n ws ss)
 
 initial :: Int -> Int -> Maze
 initial d n = Maze d m w s
@@ -25,7 +26,7 @@ initial d n = Maze d m w s
 
 recur :: Maze -> Maze
 recur m
-	| length (getWalls m) > 0 = m
+	| length (getWalls m) > 0 = recur (snd (popWall m))
 	| otherwise = m
 		  
 
